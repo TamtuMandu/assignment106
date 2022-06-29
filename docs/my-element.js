@@ -111,36 +111,26 @@ export class MyElement extends LitElement {
     this.postCount = this.tweets.length;
   }
 
-  updateTweets(tweets) {
-    this.tweets = [...tweets];
-    this.postCount = this.tweets.length;
-  }
-
   nameInput(event){
     const name = event.target.value
     this.tweet.name = name;
   }
+
   postInput(event){
     const post = event.target.value
     this.tweet.post = post;
   }
 
-
-
   postTweet(){
     if(this.tweet.name && this.tweet.post) {
-      check()
-      .then((response)=> {
-        return saveToStorage(this.tweet);
-      })
+      saveToStorage(this.tweet)
       .then((tweets) => {
-        this.updateTweets(tweets);
-        alert('ოპერაცია წარმატებით შესრულდა')
+        this.tweets = [...tweets];
+        this.postCount = this.tweets.length;
       })
       .catch((error)=> {
-        alert('მოხდა შეცდომა, სცადეთ თავიდან', error)
+        console.log(error);
       })
-
     } else {
       alert('ველების შევსება აუცილებელია')
     }
@@ -149,7 +139,8 @@ export class MyElement extends LitElement {
   DeleteTweet(index){
     deleteFromStorage(index);
     const tweets = loadFromStorage();
-    this.updateTweets(tweets);
+    this.tweets = [...tweets];
+    this.postCount = this.tweets.length;
   }
 
 }
